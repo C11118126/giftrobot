@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <title>🎁 禮物推薦爆破版</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background: linear-gradient(to right, #ffecd2, #fcb69f);
+      min-height: 100vh;
+      font-family: 'Segoe UI', sans-serif;
+      padding: 40px 15px;
+      position: relative;
+    }
+
+    .form-wrapper {
+      position: relative;
+      max-width: 600px;
+      margin: auto;
+    }
+
+    .form-box {
+      background: #fff;
+      padding: 2rem;
+      border-radius: 1rem;
+      box-shadow: 0 0 20px rgba(0,0,0,0.1);
+      z-index: 1;
+      position: relative;
+    }
+
+    .explosion-box {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 10;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      animation: explode 0.8s ease-out forwards;
+    }
+
+    .explosion-img {
+      width: 300px;
+      max-width: 80vw;
+    }
+
+    .recommendation-card {
+      animation: fadeInUp 0.7s ease-out;
+    }
+
+    @keyframes explode {
+      0% { transform: translate(-50%, -50%) scale(0.5); opacity: 0; }
+      50% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; }
+      100% { transform: translate(-50%, -50%) scale(1); }
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+<div class="container text-center mb-5 text-dark">
+  <h1 class="fw-bold">🎁 禮物推薦系統</h1>
+  <p>輸入條件後，讓你的專屬禮物從表單中爆破登場！</p>
+</div>
+
+<div class="form-wrapper">
+  <div class="form-box">
+    <form method="post" onsubmit="return playExplosionBeforeSubmit(event)">
+      <div class="mb-3">
+        <label class="form-label">興趣</label>
+        <input type="text" name="interest" class="form-control" placeholder="例如：運動、看書、烹飪" required>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">性別</label>
+        <select name="gender" class="form-select">
+          <option value="男">男</option>
+          <option value="女">女</option>
+        </select>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">預算上限（NT$）</label>
+        <input type="number" name="price" class="form-control" placeholder="例如：1000" required>
+      </div>
+      <button type="submit" class="btn btn-danger w-100">💥 爆出推薦</button>
+    </form>
+  </div>
+
+  <!-- 🎁 浮在表單正中間的爆破動畫 -->
+  <div id="explosion" class="explosion-box">
+    <img src="{{ url_for('static', filename='images/gift_explode.gif') }}" class="explosion-img" alt="禮物爆開">
+    <h4 class="text-danger mt-3 fw-bold">推薦結果登場！</h4>
+  </div>
+</div>
+
+{% if recommendations %}
+  <div class="row mt-5">
+  {% for item in recommendations %}
+    <div class="col-md-6 mt-3 recommendation-card">
+      <div class="card shadow-sm rounded-4">
+        <div class="card-body">
+          <h5 class="card-title">{{ item['name'] }}</h5>
+          <p class="card-text">價格：NT${{ item['price'] }}</p>
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+  </div>
+{% endif %}
+
+<script>
+function playExplosionBeforeSubmit(event) {
+  event.preventDefault();
+
+  const box = document.getElementById("explosion");
+  if (box) box.style.display = "flex";
+
+  setTimeout(() => {
+    const form = event.target.closest("form");
+    if (form) form.submit();
+  }, 1000); // 延遲 1 秒送出表單
+  return false;
+}
+</script>
+</body>
+</html>
