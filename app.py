@@ -4,8 +4,9 @@ import pandas as pd
 app = Flask(__name__)
 
 # === 讀取資料 ===
-user_df = pd.read_csv("user_gift_data.csv", encoding="cp950")
-gift_df = pd.read_csv("gift_products.csv", encoding="cp950")
+user_df = pd.read_csv("user_gift_data.csv", encoding="utf-8")
+gift_df = pd.read_csv("gift_products.csv", encoding="utf-8")
+
 
 user_df.columns = user_df.columns.str.strip()
 gift_df.columns = gift_df.columns.str.strip()
