@@ -107,6 +107,12 @@
   </div>
 </div>
 
+{% if message %}
+  <div class="alert alert-warning mt-4 text-center" role="alert">
+    {{ message }}
+  </div>
+{% endif %}
+
 {% if recommendations %}
   <div class="row mt-5">
   {% for item in recommendations %}
