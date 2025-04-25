@@ -49,7 +49,7 @@ def result():
     top_gift_ids = top_gift_ids[top_gift_ids["price"] <= price]
     top_gift_ids = top_gift_ids.sort_values(by="score", ascending=False).head(3)
 
-    recommendations = top_gift_ids[["name", "price"]].to_dict(orient="records")
+    recommendations = top_gift_ids[["name", "price", "url"]].to_dict(orient="records")
 
     if not recommendations:
         message = "目前沒有符合條件的推薦結果，請嘗試其他組合。"
